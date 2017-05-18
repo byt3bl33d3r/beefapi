@@ -24,7 +24,7 @@ import requests
 import json
 import logging
 
-from collections import UserList
+from UserList import UserList
 
 logging.getLogger("requests").setLevel(logging.WARNING)  #Disables "Starting new HTTP Connection (1)" log message
 
@@ -57,7 +57,7 @@ class BeefAPI:
                 return False
 
         except Exception as e:
-            print("[BeEF-API] Error logging in to BeEF: {}".format(e))
+            print "[BeEF-API] Error logging in to BeEF: {}".format(e)
 
     @property   
     def hooked_browsers(self):
@@ -81,7 +81,7 @@ class BeefAPI:
     def modules(self):
         modules = ModuleList([])
         r = requests.get(self.modules_url)
-        for k,v in r.json().items():
+        for k,v in r.json().iteritems():
             modules.append(Module(v, self.url, self.token))
         return modules
 
@@ -169,7 +169,7 @@ class ARE_Rule(object):
         self.url = url
         self.token = token
 
-        for k,v in data.items():
+        for k,v in data.iteritems():
             setattr(self, k, v)
 
         self.modules = json.loads(self.modules)
@@ -220,7 +220,7 @@ class Module(object):
         self.url = url
         self.token = token
 
-        for k,v in data.items():
+        for k,v in data.iteritems():
             setattr(self, k, v)
 
     @property
@@ -252,7 +252,7 @@ class Module(object):
 class Log(object):
 
     def __init__(self, log_dict):
-        for k,v in log_dict.items():
+        for k,v in log_dict.iteritems():
             setattr(self, k, v)
 
 class DNS_Rule(object):
@@ -261,7 +261,7 @@ class DNS_Rule(object):
         self.url = url
         self.token = token
 
-        for k,v in rule.items():
+        for k,v in rule.iteritems():
             setattr(self, k, v)
 
     def delete(self):
@@ -303,14 +303,14 @@ class Hooked_Browsers(object):
     @property
     def online(self):
         sessions = SessionList([])
-        for k,v in self.data['hooked-browsers']['online'].items():
+        for k,v in self.data['hooked-browsers']['online'].iteritems():
             sessions.append(Session(v['session'], self.data, self.url, self.token))
         return sessions
 
     @property
     def offline(self):
         sessions = SessionList([])
-        for k,v in self.data['hooked-browsers']['offline'].items():
+        for k,v in self.data['hooked-browsers']['offline'].iteritems():
             sessions.append(Session(v['session'], self.data, self.url, self.token))
         return sessions
 
@@ -358,7 +358,7 @@ class Session(object):
         return r.json()
 
     def get_property(self, key):
-        for k,v in self.data['hooked-browsers'].items():
-            for l,s in v.items(): 
+        for k,v in self.data['hooked-browsers'].iteritems():
+            for l,s in v.iteritems(): 
                 if self.session == s['session']:
                     return s[key]
